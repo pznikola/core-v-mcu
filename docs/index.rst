@@ -23,29 +23,29 @@ CORE-V-MCU User Manual
     :caption: CORE-V-MCU Introduction:
     :maxdepth: 1
 
-    doc-src/overview.rst
-    doc-src/terminology.rst
+    doc-src/overview.md
+    doc-src/terminology.md
     doc-src/open-source-development-at-openhw.rst
     doc-src/high_level_architecture.rst
-    doc-src/device_characteristics.rst
-    doc-src/package_information.rst
+    doc-src/device_characteristics.md
+    doc-src/package_information.md
     doc-src/integration.rst
     doc-src/io_assignment_tables.rst
-    doc-src/startup.rst
+    doc-src/startup.md
     doc-src/mmap.rst
-    doc-src/interrupts.rst
-    doc-src/clock_domains.rst
-    doc-src/debug_approach.rst
-    doc-src/evaluation_kits.rst
-    doc-src/software_support.rst
+    doc-src/interrupts.md
+    doc-src/clock_domains.md
+    doc-src/debug_approach.md
+    doc-src/evaluation_kits.md
+    doc-src/software_support.md
 
 
 ..  toctree::
-    :caption: CORE-V-MCU Bus Interconnect:
+    :caption: CORE-V-MCU Bus Fabrics:
     :maxdepth: 1
     :glob:
 
-    doc-src/tcdm_interconnect.rst
+    doc-src/l2_tcdm_interconnect.rst
     doc-src/apb_peripheral_interconnect.rst
 
 
@@ -54,9 +54,9 @@ CORE-V-MCU User Manual
     :maxdepth: 1
     :glob:
 
-    doc-src/core_complex_subsystem.rst
+    doc-src/fabric_control_subsystem.rst
     doc-src/udma_subsystem.rst
-    doc-src/efpga_subsystem.rst
+    doc-src/efpga_subsystem.md
 
 
 ..  toctree::

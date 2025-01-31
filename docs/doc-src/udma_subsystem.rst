@@ -34,7 +34,7 @@ Architecture
 ------------
 
 The Figure below is a high-level block diagram of the uDMA.
-The main components are the Tx channels, the Rx channels, the interface to the TCDM Interconnect and the configuration interface (CFG IF).
+The main components are the Tx channels, the Rx channels, the interface to the L2 TCDM Interconnect and the configuration interface (CFG IF).
 The Tx/Rx channels connect to a set of peripherals.
 Individual peripherals may have one or more Tx or Rx channels depending on the need.
 As an example, the I2C master will require one TX and one RX channel while the camera interface (CPI) needs only one Rx channel.
@@ -123,11 +123,13 @@ Once again this is not a limit in the current IO subsystem since S/P conversion 
 
    Micro-DMA Tx Channel Protocol
 
-TCDM Interface
-~~~~~~~~~~~~~~
+   2.3 L2 memory interface
 
-The TCDM Interface arbitrates between the access requests originated from the Tx or Rx channels.
-Among with the arbitration the TCDM interface generates the proper byte enables and puts the data to the proper lanes when accessing the L2 memories.
+L2 TCDM Interface
+~~~~~~~~~~~~~~~~~
+
+The L2 TCDM Interface(L2if) arbitrates between the access requests originated from the Tx or Rx channels.
+Among with the arbitration the L2if generates the proper byte enables and puts the data to the proper lanes when accessing the L2 memories.
 An incoming write request from the Rx channels is sent to the L2 only if there is no pending read request from the TX channels or if the priority is assigned to the RX channels.
 The priority is flipped from Tx to Rx or vice versa when there is a conflict between read or write requests.
 
@@ -144,16 +146,32 @@ The first 128*15 bytes are dedicated to the 15 peripherals while the last 32 con
 
 uDMA Subsystem CSRs
 -------------------
-The uDMA implements three CSRs to:
+The UDMA addresses are organized as an array of channels.
+The first channel, channel 0, is a control channel that is used to:
 
 * enable or disable the peripheral clocks
-* set compare value for the event matching mechanism
 * reset the periperal controller
+* set compare value for the event macthing mechanism
 
-These uDMA CSRs are defined below.
+The base address for the UDMA channels is defined as UDMA_START_ADDR in core-v-mcu-config.h
+The size of each channel is UDMA_CH_SIZE, therefore the address of channels N is UDMA_START_ADDR+N*UDMA_CH_SIZE.
+core-v-mcu-config.h has explicit defines for each peripheral.
+For instance,  if there are 2 UARTS then there are three defines:
 
-UDMA_CLK_EN offset = 0x000
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+* UDMA_CH_ADDR_UART -- address of first UART
+* UDMA_CH_ADDR_UART0 -- address of UART0
+* UDMA_CH_ADDR_UART1 -- address of UART1
+
+The reason for having the UDMA_CH_UART define
+is so that you can programmatically access UART ID by using
+UDMA_CH_ADDR_UART + ID * UDMA_CH_SIZE
+
+The register definitions for the control channel are specified in this section.
+The register definitions for each peripheral are specified in sections named UDMA_XXXXX.
+
+
+REG_CG offset = 0x000
+~~~~~~~~~~~~~~~~~~~~~
 
 +-------------------+-------+------+------------+-------------------------------------------------------------------------+
 | Field             |  Bits | Type | Default    | Description                                                             |
@@ -163,8 +181,8 @@ UDMA_CLK_EN offset = 0x000
 |                                               | see core-v-mcu_config 'Peripheral clock enable masks' for bit positions |
 +-------------------+-------+------+------------+-------------------------------------------------------------------------+
 
-UDMA_CFG_EVT offset = 0x004
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+REG_CFG_EVT offset = 0x004
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +------------+-------+------+------------+-------------------------------------------------------------+
 | Field      |  Bits | Type | Default    | Description                                                 |
@@ -178,8 +196,8 @@ UDMA_CFG_EVT offset = 0x004
 | CMP_EVENT0 |   7:0 |      |       0x03 | Compare value for event detection                           |
 +------------+-------+------+------------+-------------------------------------------------------------+
 
-UDMA_RST offset = 0x008
-~~~~~~~~~~~~~~~~~~~~~~~
+REG_RST offset = 0x008
+~~~~~~~~~~~~~~~~~~~~~~
 
 +--------------+-------+------+------------+-------------------------------------------------------------------------+
 | Field        |  Bits | Type | Default    | Description                                                             |
@@ -189,6 +207,3 @@ UDMA_RST offset = 0x008
 |                                          | use core-v-mcu_config 'Peripheral clock enable masks' for bit positions |
 +--------------+-------+------+------------+-------------------------------------------------------------------------+
 
-.. note::
-   Most of the CSRs associated with the Micro-DMA are actually uDMA peripheral CSRs.
-   While the uDMA subsystem implements the selection logic for uDMA peripheral CSRs, this is transparent to the user.
