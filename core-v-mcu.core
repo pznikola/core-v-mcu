@@ -115,6 +115,10 @@ filesets:
     files:
     - emulation/xilinx/ips/xilinx_clk_mngr.tcl
     file_type: tclSource
+  nexys-video-ips:
+    files:
+    - emulation/xilinx/ips/xilinx_clk_mngr.tcl
+    file_type: tclSource
   genesys2-ips:
     files:
     - emulation/core-v-mcu-genesys2/ips/xilinx_clk_mngr.tcl
@@ -165,6 +169,15 @@ filesets:
   nexys-xdc:
     files:
     - emulation/core-v-mcu-nexys/constraints/core-v-mcu-pin-assignment.xdc
+    file_type: xdc
+  nexys-video-rtl:
+    files:
+    - emulation/core-v-mcu-nexys-video/rtl/core_v_mcu_nexys_video.v
+    - emulation/xilinx/rtl/fpga_clk_gen.sv
+    file_type: systemVerilogSource
+  nexys-video-xdc:
+    files:
+    - emulation/core-v-mcu-nexys-video/constraints/core-v-mcu-pin-assignment.xdc
     file_type: xdc
   xilinx-tcl:
     files:
@@ -338,3 +351,21 @@ targets:
       vivado:
         part: xc7k325tffg900-2
     toplevel: core_v_mcu_genesys2
+  nexys-video:
+    <<: *default_target
+    default_tool: vivado
+    description: Digilent Nexys Video Board
+    parameters:
+    - PULP_FPGA_EMUL=true
+    filesets_append:
+    - nexys-video-ips
+    - xilinx-ips
+    - xilinx-tcl
+    - emulation-rtl
+    - nexys-video-rtl
+    - nexys-video-xdc
+    - rom_init
+    tools:
+      vivado:
+        part: xc7a200tsbg484-1
+    toplevel: core_v_mcu_nexys_video

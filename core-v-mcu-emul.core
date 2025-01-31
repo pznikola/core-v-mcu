@@ -39,6 +39,15 @@ filesets:
     - emulation/core-v-mcu-nexys/tcl/common.tcl
     - emulation/core-v-mcu-nexys/tcl/flatten.tcl
     file_type: tclSource
+  nexys-video-xdc:
+    files:
+    - emulation/core-v-mcu-nexys-video/constraints/core-v-mcu-pin-assignment.xdc
+    file_type: xdc
+  nexys-video-cfg:
+    files:
+    - emulation/core-v-mcu-nexys-video/tcl/common.tcl
+    - emulation/core-v-mcu-nexys-video/tcl/flatten.tcl
+    file_type: tclSource
   xilinx-ips:
     files:
     - emulation/xilinx/ips/xilinx_clk_mngr.tcl
@@ -83,3 +92,16 @@ targets:
       vivado:
         part: xc7a100tcsg324-1
     toplevel: xilinx_core_v_mcu
+  nexys-video:
+    <<: *default
+    default_tool: vivado
+    description: Digilent Nexys Video Board
+    parameters:
+    - PULP_FPGA_EMUL=true
+    filesets_append:
+    - nexys-video-cfg
+    - nexys-video-xdc
+    tools:
+      vivado:
+        part: xc7a200tsbg484-1
+    toplevel: xilinx_core_v_mcu_video

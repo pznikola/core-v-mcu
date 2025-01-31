@@ -18,6 +18,8 @@ sw/inc/
 sw/csv-mirror/
 emulation/core-v-mcu-nexys/constraints/core-v-mcu-pin-assignment.xdc
 emulation/core-v-mcu-nexys/rtl/*.v
+emulation/core-v-mcu-nexys-video/constraints/core-v-mcu-pin-assignment.xdc
+emulation/core-v-mcu-nexys-video/rtl/*.v
 vivado*
 xmverilog.*
 /venv

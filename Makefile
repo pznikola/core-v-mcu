@@ -7,17 +7,20 @@ YML=$(shell find . -name '*.yml' -print)
 IOSCRIPT=rtl/includes/pulp_soc_defines.svh
 IOSCRIPT+=rtl/includes/pulp_peripheral_defines.svh
 IOSCRIPT+=rtl/includes/periph_bus_defines.svh
-IOSCRIPT+=nexys-pin-table.csv genesys2-pin-table.csv
+IOSCRIPT+=nexys-video-pin-table.csv nexys-pin-table.csv genesys2-pin-table.csv
 IOSCRIPT+=perdef.json
 NEXSY_XDC=emulation/core-v-mcu-nexys/constraints/Nexys-A7-100T-Master.xdc
+NEXSY_VIDEO_XDC=emulation/core-v-mcu-nexys-video/constraints/Nexys-Video-Master.xdc
 NEXYSA7_BITMAP?=emulation/core_v_mcu_nexys.bit
-GENESYS_XDC=emulation/core-v-mcu-nexys/constraints/Genesys2-Master.xdc
+NEXYS_VIDEO_BITMAP?=emulation/core_v_mcu_nexys_video.bit
+GENESYS_XDC=emulation/core-v-mcu-genesys2/constraints/Genesys2-Master.xdc
 
 IOSCRIPT_OUT=rtl/core-v-mcu/top/pad_control.sv
 IOSCRIPT_OUT+=rtl/includes/pulp_peripheral_defines.svh
 IOSCRIPT_OUT+=rtl/includes/periph_bus_defines.svh
 IOSCRIPT_OUT+=core-v-mcu-config.h
 IOSCRIPT_NEXSY=emulation/core-v-mcu-nexys/constraints/core-v-mcu-pin-assignment.xdc
+IOSCRIPT_NEXSY_VIDEO+=emulation/core-v-mcu-nexys-video/constraints/core-v-mcu-pin-assignment.xdc
 IOSCRIPT_GENESY+=emulation/core-v-mcu-genesys2/constraints/core-v-mcu-pin-assignment.xdc
 
 
@@ -132,7 +135,7 @@ nexys-emul:
 					--pin-table nexys-pin-table.csv \
 					--perdef-json perdef.json \
 					--pad-control rtl/core-v-mcu/top/pad_control.sv \
-          --xilinx-core-v-mcu-sv emulation/core-v-mcu-nexys/rtl/core_v_mcu_nexys.v \
+					--xilinx-core-v-mcu-sv emulation/core-v-mcu-nexys/rtl/core_v_mcu_nexys.v \
 					--emulation-toplevel core_v_mcu_nexys \
 					--input-xdc emulation/core-v-mcu-nexys/constraints/Nexys-A7-100T-Master.xdc \
 					--output-xdc emulation/core-v-mcu-nexys/constraints/core-v-mcu-pin-assignment.xdc
@@ -154,6 +157,44 @@ nexys-emul:
 					fusesoc --cores-root . run --target=nexys-a7-100t --setup --build openhwgroup.org:systems:core-v-mcu\
 				) 2>&1 | tee lint.log
 				cp ./build/openhwgroup.org_systems_core-v-mcu_0/nexys-a7-100t-vivado/openhwgroup.org_systems_core-v-mcu_0.runs/impl_1/core_v_mcu_nexys.bit emulation/core_v_mcu_nexys.bit
+
+.PHONEY: nexys-video-emul
+nexys-video-emul:
+				@echo "*****************************************"
+				@echo "*                                       *"
+				@echo "* setting up nexys-video specific files *"
+				@echo "*                                       *"
+				@echo "*****************************************"
+				mkdir -p emulation/core-v-mcu-nexys-video/rtl
+				python3 util/ioscript.py \
+					--soc-defines rtl/includes/pulp_soc_defines.svh \
+					--peripheral-defines rtl/includes/pulp_peripheral_defines.svh \
+					--periph-bus-defines rtl/includes/periph_bus_defines.svh \
+					--pin-table nexys-video-pin-table.csv \
+					--perdef-json perdef.json \
+					--pad-control rtl/core-v-mcu/top/pad_control.sv \
+					--xilinx-core-v-mcu-sv emulation/core-v-mcu-nexys-video/rtl/core_v_mcu_nexys_video.v \
+					--emulation-toplevel core_v_mcu_nexys_video \
+					--input-xdc emulation/core-v-mcu-nexys-video/constraints/Nexys-Video-Master.xdc \
+					--output-xdc emulation/core-v-mcu-nexys-video/constraints/core-v-mcu-pin-assignment.xdc
+				util/format-verible
+				@echo "*************************************"
+				@echo "*                                   *"
+				@echo "* running Vivado                    *"
+				@echo "*                                   *"
+				@echo "*************************************"
+				(\
+					export BOARD=nexys;\
+					export BOARD_CLOCK_MHZ=100;\
+					export XILINX_PART=xc7a200tsbg484-1;\
+					export XILINX_BOARD=digilentinc.com:nexys_video:part0:1.1;\
+					export FC_CLK_PERIOD_NS=100;\
+					export PER_CLK_PERIOD_NS=200;\
+					export FPGA_CLK_PERIOD_NS=125;\
+					export SLOW_CLK_PERIOD_NS=4000;\
+					fusesoc --cores-root . run --target=nexys-video --setup --build openhwgroup.org:systems:core-v-mcu\
+				) 2>&1 | tee lint.log
+				cp ./build/openhwgroup.org_systems_core-v-mcu_0/nexys-video-vivado/openhwgroup.org_systems_core-v-mcu_0.runs/impl_1/core_v_mcu_nexys_video.bit emulation/core_v_mcu_nexys_video.bit
 
 
 
