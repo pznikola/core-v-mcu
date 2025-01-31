@@ -10,12 +10,12 @@
 
 
 ## FMC
-#set_property -dict { PACKAGE_PIN E6 } [get_ports { GTP_CLK_N }]; # a
-#set_property -dict { PACKAGE_PIN F6 } [get_ports { GTP_CLK_P }]; # a
-#create_clock -add -name gtpclk0_pin -period 6.400 -waveform {0 3.200} [get_ports {GTP_CLK_P}]; # a
-#set_property -dict { PACKAGE_PIN E10 } [get_ports { FMC_MGT_CLK_N }]; # a
-#set_property -dict { PACKAGE_PIN F10 } [get_ports { FMC_MGT_CLK_P }]; # a
-#create_clock -add -name mgtclk1_pin -period 6.400 -waveform {0 3.200} [get_ports {FMC_MGT_CLK_P}]; # a
+#set_property -dict { PACKAGE_PIN E6 } [get_ports { GTP_CLK_N }]; # Sch=GTP_CLK_N
+#set_property -dict { PACKAGE_PIN F6 } [get_ports { GTP_CLK_P }]; # Sch=GTP_CLK_P
+#create_clock -add -name gtpclk0_pin -period 6.400 -waveform {0 3.200} [get_ports {GTP_CLK_P}]; # Sch=GTP_CLK_P
+#set_property -dict { PACKAGE_PIN E10 } [get_ports { FMC_MGT_CLK_N }]; # Sch=FMC_MGT_CLK_N
+#set_property -dict { PACKAGE_PIN F10 } [get_ports { FMC_MGT_CLK_P }]; # Sch=FMC_MGT_CLK_P
+#create_clock -add -name mgtclk1_pin -period 6.400 -waveform {0 3.200} [get_ports {FMC_MGT_CLK_P}]; # Sch=FMC_MGT_CLK_P
 
 
 ## LEDs
