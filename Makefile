@@ -132,9 +132,9 @@ nexys-emul:
 					--pin-table nexys-pin-table.csv \
 					--perdef-json perdef.json \
 					--pad-control rtl/core-v-mcu/top/pad_control.sv \
+          --xilinx-core-v-mcu-sv emulation/core-v-mcu-nexys/rtl/core_v_mcu_nexys.v \
 					--emulation-toplevel core_v_mcu_nexys \
 					--input-xdc emulation/core-v-mcu-nexys/constraints/Nexys-A7-100T-Master.xdc \
-		                        --xilinx-core-v-mcu-sv emulation/core-v-mcu-nexys/rtl/core_v_mcu_util.v \
 					--output-xdc emulation/core-v-mcu-nexys/constraints/core-v-mcu-pin-assignment.xdc
 				util/format-verible
 				@echo "*************************************"
