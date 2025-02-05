@@ -22,6 +22,12 @@ Install the required Python tools:
 ```
 pip3 install --user -r python-requirements.txt
 ```
+Or if you want to use python virtual enviroment:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r python-requirements.txt
+```
 
 Install fusesoc: https://fusesoc.readthedocs.io/en/stable/user/installation.html#ug-installation
 
@@ -35,18 +41,20 @@ The build system uses make to capture the required steps.
 make with no argments will print a list of the current targets:
 ```
 $ make
-all:            generate build scripts, custom build files, doc and sw header files
-bitstream:      generate nexysA7-100T.bit file for emulation
-model-lib:      build a Verilator model library
-lint:           run Verilator lint check
-docs:           generate documentation
-sw:             generate C header files (in ./sw)
-nexys-emul:     generate bitstream for Nexys-A7-100T emulation)
-genesys-emul:   generate bitstream for Genesys2 FPGA board
-buildsim:       build for Questa sim
-sim:            run Questa sim
-downloadn:      Download bitstream to Nexys board
-downloadg:      Download bitstream to Genesys2 board
+all:              generate build scripts, custom build files, doc and sw header files
+bitstream:        generate nexysA7-100T.bit file for emulation
+model-lib:        build a Verilator model library
+lint:             run Verilator lint check
+docs:             generate documentation
+sw:               generate C header files (in ./sw)
+nexys-emul:       generate bitstream for Nexys-A7-100T emulation)
+nexys-video-emul: generate bitstream for Nexys-Video emulation)
+genesys-emul:     generate bitstream for Genesys2 FPGA board
+buildsim:         build for Questa sim
+build-verilator:  build for Verilator sim
+sim:              run Questa sim
+downloadn:        Download bitstream to Nexys board
+downloadg:        Download bitstream to Genesys2 board
 ```
 
 ## Building an FPGA Image
