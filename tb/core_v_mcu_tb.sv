@@ -36,8 +36,13 @@ module core_v_mcu_tb;
 
 
     initial begin
-      $display("***********************************");
+      $display("**************** TB Started ****************");
     end
+
+    initial begin: vcd_dump
+      $dumpfile("core_v_mcu.vcd");
+      $dumpvars(1, core_v_mcu_tb);
+    end: vcd_dump
 
     initial begin: timing_format
         $timeformat(-9, 0, "ns", 9);

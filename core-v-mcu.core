@@ -148,12 +148,12 @@ filesets:
     files:
     - tb/mem_init_files/verilatorBoot.mem: {copyto: mem_init/boot.mem}
     - tb/mem_init_files/cli_sim.txt: {copyto: mem_init/cli.txt}
-    - tb/mem_init_files/col0.mem: {copyto: 'mem_init/TOP.core_v_mcu.i_soc_domain.l2_ram_i.CUTS[0].bank_i.u0.mem'}
-    - tb/mem_init_files/col1.mem: {copyto: 'mem_init/TOP.core_v_mcu.i_soc_domain.l2_ram_i.CUTS[1].bank_i.u0.mem'}
-    - tb/mem_init_files/col2.mem: {copyto: 'mem_init/TOP.core_v_mcu.i_soc_domain.l2_ram_i.CUTS[2].bank_i.u0.mem'}
-    - tb/mem_init_files/col3.mem: {copyto: 'mem_init/TOP.core_v_mcu.i_soc_domain.l2_ram_i.CUTS[3].bank_i.u0.mem'}
-    - tb/mem_init_files/privateBank0.mem: {copyto: mem_init/TOP.core_v_mcu.i_soc_domain.l2_ram_i.bank_sram_pri0_i.u0.mem}
-    - tb/mem_init_files/privateBank1.mem: {copyto: mem_init/TOP.core_v_mcu.i_soc_domain.l2_ram_i.bank_sram_pri1_i.u0.mem}
+    - tb/mem_init_files/col0.mem: {copyto: 'mem_init/core_v_mcu.i_soc_domain.l2_ram_i.CUTS[0].bank_i.u0.mem'}
+    - tb/mem_init_files/col1.mem: {copyto: 'mem_init/core_v_mcu.i_soc_domain.l2_ram_i.CUTS[1].bank_i.u0.mem'}
+    - tb/mem_init_files/col2.mem: {copyto: 'mem_init/core_v_mcu.i_soc_domain.l2_ram_i.CUTS[2].bank_i.u0.mem'}
+    - tb/mem_init_files/col3.mem: {copyto: 'mem_init/core_v_mcu.i_soc_domain.l2_ram_i.CUTS[3].bank_i.u0.mem'}
+    - tb/mem_init_files/privateBank0.mem: {copyto: mem_init/core_v_mcu.i_soc_domain.l2_ram_i.bank_sram_pri0_i.u0.mem}
+    - tb/mem_init_files/privateBank1.mem: {copyto: mem_init/core_v_mcu.i_soc_domain.l2_ram_i.bank_sram_pri1_i.u0.mem}
     file_type: user
   tb-rtl:
     files:
@@ -271,6 +271,26 @@ targets:
         - -relax
         - --O0
         - -v 0
+        - -timescale 1ns/1ps
+      verilator:
+        filesets_append:
+        - verilator-waiver
+        verilator_options:
+        - -Wno-fatal
+        - -O3
+        - --trace
+        - --timing
+        - --Wno-WIDTHEXPAND
+        - --Wno-WIDTHTRUNC
+        - --Wno-UNSIGNED
+        - --Wno-CMPCONST
+        - --Wno-ASCRANGE
+        - --Wno-WIDTHCONCAT
+        - --Wno-IMPLICIT
+        - --Wno-PINMISSING
+        - --Wno-MODDUP
+        - --Wno-MISINDENT
+        - --CFLAGS -fPIC -DVL_TIME_CONTEXT
         - -timescale 1ns/1ps
 
   # A target for a Verilator model as a library.  Note that we do not disable

@@ -94,6 +94,12 @@ sim:
 buildsim: pseudo-uart
 	fusesoc --cores-root . run --no-export --target=sim --setup --build openhwgroup.org:systems:core-v-mcu 2>&1 | tee buildsim.log
 
+.PHONY: build-verilator
+build-verilator: pseudo-uart
+	fusesoc --cores-root . run --no-export --target=sim --setup --build --tool=verilator openhwgroup.org:systems:core-v-mcu 2>&1 | tee buildsim.log
+
+
+
 ###############################################################################
 # XCELIUM targets
 #
